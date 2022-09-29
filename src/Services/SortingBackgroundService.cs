@@ -6,13 +6,16 @@ namespace MaerskChallenge.Services
     public class SortingBackgroundService : BackgroundService
     {
         private readonly IQueue<Job> _jobQueue;
+        private readonly ISortingService<int> _sortingService;
         private readonly ILogger<SortingBackgroundService> _logger;
 
         public SortingBackgroundService(
-            IQueue<Job> jobQueue, 
+            IQueue<Job> jobQueue,
+            ISortingService<int> sortingService,
             ILogger<SortingBackgroundService> logger)
         {
             _jobQueue = jobQueue;
+            _sortingService = sortingService;
             _logger = logger;
         }
 
@@ -29,15 +32,15 @@ namespace MaerskChallenge.Services
 
                 _logger.LogInformation($"Dequeued. Job id: ${job.Id}");
 
-                await Task.Run(() => ExecuteSorting(job));
+                await ExecuteSortingAsync(job);
             }
         }
 
-        public void ExecuteSorting(Job job)
+        async public Task ExecuteSortingAsync(Job job)
         {
             try
             {
-                job.SortedArray = job.InputArray.OrderBy(i => i);
+                job.SortedArray = await _sortingService.Sort(job.InputArray);
                 job.Duration = DateTime.UtcNow - job.Timestamp;
                 job.Status = JobStatus.Completed;
                 _logger.LogInformation($"Sorted successfully. Job id: ${job.Id}");

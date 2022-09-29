@@ -13,12 +13,19 @@ namespace MaerskChallenge.Infrastructure
             return services
                 .AddRepositories()
                 .AddQueues()
+                .AddServices()
                 .AddHostedServices();
         }
 
         private static IServiceCollection AddQueues(this IServiceCollection services)
         {
             services.TryAddSingleton<IQueue<Job>, JobQueue<Job>>();
+            return services;
+        }
+
+        private static IServiceCollection AddServices(this IServiceCollection services)
+        {
+            services.AddTransient<ISortingService<int>, SortingService<int>>();
             return services;
         }
 
