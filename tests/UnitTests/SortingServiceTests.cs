@@ -17,9 +17,9 @@ namespace UnitTests
         [InlineData(new[] { 1 }, new[] { 1 })]
         [InlineData(new[] { 1, 2, 3 }, new[] { 1, 2, 3 })]
         [InlineData(new[] { 5, 4, 3, 2, 1 }, new[] { 1, 2, 3, 4, 5 })]
-        async public void SortTest(int[] inputArray, int[] expectedArray)
+        public void SortTest(int[] inputArray, int[] expectedArray)
         {
-            var sortedArray = await _sortingService.Sort(inputArray);
+            var sortedArray = _sortingService.Sort(inputArray);
 
             sortedArray.Should().Equal(expectedArray);
         }

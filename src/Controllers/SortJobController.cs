@@ -30,7 +30,7 @@ namespace MaerskChallenge.Controllers
         [HttpGet]
         async public Task<IEnumerable<Job>> Get()
         {
-            return await _jobRepository.GetJobs();
+            return await _jobRepository.GetJobsAsync();
         }
 
         /// <summary>
@@ -56,7 +56,7 @@ namespace MaerskChallenge.Controllers
                 InputArray = value
             };
 
-            await _jobRepository.AddJob(job);
+            await _jobRepository.AddJobAsync(job);
             _jobQueue.Enqueue(job);
 
             _logger.LogInformation($"Enqueued. Job id: ${job.Id}");
@@ -74,7 +74,7 @@ namespace MaerskChallenge.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         async public Task<ActionResult<Job>> GetById(Guid id)
         {
-            var job = await _jobRepository.GetJob(id);
+            var job = await _jobRepository.GetJobAsync(id);
 
             if (job == null)
             {

@@ -40,7 +40,7 @@ namespace MaerskChallenge.Services
         {
             try
             {
-                job.SortedArray = await _sortingService.Sort(job.InputArray);
+                job.SortedArray = _sortingService.Sort(job.InputArray);
                 job.Duration = DateTime.UtcNow - job.Timestamp;
                 job.Status = JobStatus.Completed;
                 _logger.LogInformation($"Sorted successfully. Job id: ${job.Id}");

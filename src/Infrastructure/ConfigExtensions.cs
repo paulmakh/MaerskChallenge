@@ -3,6 +3,7 @@
 using MaerskChallenge.Model;
 using MaerskChallenge.Queue;
 using MaerskChallenge.Services;
+using MaerskChallenge.Middleware;
 
 namespace MaerskChallenge.Infrastructure
 {
@@ -14,6 +15,7 @@ namespace MaerskChallenge.Infrastructure
                 .AddRepositories()
                 .AddQueues()
                 .AddServices()
+                .AddMiddlewares()
                 .AddHostedServices();
         }
 
@@ -23,8 +25,15 @@ namespace MaerskChallenge.Infrastructure
             return services;
         }
 
+        private static IServiceCollection AddMiddlewares(this IServiceCollection services)
+        {
+            services.AddScoped<ExceptionMiddleware>();
+            return services;
+        }
+
         private static IServiceCollection AddServices(this IServiceCollection services)
         {
+            
             services.AddTransient<ISortingService<int>, SortingService<int>>();
             return services;
         }

@@ -9,17 +9,17 @@
             _jobs = new List<Job>();
         }
 
-        async public Task<IList<Job>> GetJobs()
+        async public Task<IList<Job>> GetJobsAsync()
         {
             return await Task.Run<IList<Job>>(() => _jobs);
         }
 
-        async public Task AddJob(Job job)
+        async public Task AddJobAsync(Job job)
         {
             await Task.Run(() => _jobs.Add(job));
         }
 
-        async public Task<Job> GetJob(Guid id)
+        async public Task<Job> GetJobAsync(Guid id)
         {
             return await Task.Run<Job>(() => _jobs.FirstOrDefault(x => x.Id == id));
         }
