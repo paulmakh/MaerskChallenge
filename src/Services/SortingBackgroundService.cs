@@ -19,12 +19,7 @@ namespace MaerskChallenge.Services
             _logger = logger;
         }
 
-        protected override Task ExecuteAsync(CancellationToken stoppingToken)
-        {
-            return ProcessTaskQueueAsync(stoppingToken);
-        }
-
-        private async Task ProcessTaskQueueAsync(CancellationToken stoppingToken)
+        protected async override Task ExecuteAsync(CancellationToken stoppingToken)
         {
             while (!stoppingToken.IsCancellationRequested)
             {
@@ -32,11 +27,11 @@ namespace MaerskChallenge.Services
 
                 _logger.LogInformation($"Dequeued. Job id: ${job.Id}");
 
-                await ExecuteSortingAsync(job);
+                ExecuteSortingAsync(job);
             }
         }
 
-        async public Task ExecuteSortingAsync(Job job)
+        public void ExecuteSortingAsync(Job job)
         {
             try
             {
@@ -50,7 +45,6 @@ namespace MaerskChallenge.Services
                 job.Status = JobStatus.Failed;
                 _logger.LogError(ex, $"Exception during sorting array. Job id: ${job.Id}");
             }
-
         }
     }
 
